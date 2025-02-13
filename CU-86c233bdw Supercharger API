@@ -1,0 +1,37 @@
+import requests
+
+def get_superchargers_in_uk():
+    # Tesla API endpoint for superchargers
+    url = "https://api.tesla.com/v1/superchargers"
+    
+    # Parameters to filter superchargers in the UK
+    params = {
+        'region': 'Europe',
+        'country': 'United Kingdom'
+    }
+    
+    # Add your access token here
+    headers = {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+    }
+    
+    response = requests.get(url, headers=headers, params=params)
+    
+    if response.status_code == 200:
+        superchargers = response.json()
+        return superchargers
+    else:
+        print(f"Failed to fetch superchargers. Status code: {response.status_code}")
+        return None
+
+def main():
+    superchargers = get_superchargers_in_uk()
+    if superchargers:
+        print("Superchargers in the UK:")
+        for charger in superchargers:
+            print(f"Name: {charger['name']}, Location: {charger['location']}, Available Stalls: {charger['available_stalls']}")
+    else:
+        print("No superchargers found in the UK.")
+
+if __name__ == "__main__":
+    main()
