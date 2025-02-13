@@ -1,0 +1,31 @@
+import requests
+
+def get_atm_outages():
+    # GloboBank API endpoint for ATM outages
+    url = "https://api.globobank.com/v1/atm/outages"
+    
+    # Add your API key here if required
+    headers = {
+        'Authorization': 'Bearer YOUR_API_KEY'
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        atm_outages = response.json()
+        return atm_outages
+    else:
+        print(f"Failed to fetch ATM outages. Status code: {response.status_code}")
+        return None
+
+def main():
+    atm_outages = get_atm_outages()
+    if atm_outages:
+        print("ATM Outages at GloboBank:")
+        for outage in atm_outages:
+            print(f"ATM ID: {outage['atm_id']}, Location: {outage['location']}, Outage Start: {outage['outage_start']}, Outage End: {outage['outage_end'] if 'outage_end' in outage else 'Ongoing'}")
+    else:
+        print("No ATM outages found.")
+
+if __name__ == "__main__":
+    main()
